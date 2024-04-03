@@ -1,3 +1,3 @@
 export const constants = {
-  site: ''
+  targetSite: 'https://www.iqair.com/th/thailand/bangkok/seri-village'
 }

@@ -10,6 +10,7 @@
         "project": "./tsconfig.json"
     },
     "rules": {
-        "@typescript-eslint/semi": "off"
+        "@typescript-eslint/semi": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off"
     }
 }
