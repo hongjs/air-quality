@@ -5,13 +5,13 @@
   "license": "ISC",
   "description": "",
   "main": "dist/app.js",
+  "keywords": [],
   "scripts": {
     "start": "tsc && node dist/app.js",
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon ./src/app.ts",
     "lint": "eslint . --ext .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "dependencies": {
     "express": "^4.19.2"
   },
@@ -23,6 +23,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
     "typescript": "*"
   },
   "repository": "https://github.com/hongjs/air-quality.git"
