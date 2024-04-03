@@ -1,11 +1,17 @@
-import express from 'express'
-const app = express()
-const port = 3000
+import express, { type Request, type Response } from 'express'
 
-app.get('/', (req, res) => {
-  res.send('Hello World!123')
+import bodyParser from 'body-parser'
+import routes from './routes'
+import { errorHandler, notFound } from './utils/errors'
+
+export const app = express()
+app.use(bodyParser.json())
+routes.forEach((route) => app.use(route))
+
+app.all('*', (req: Request, res: Response) => {
+  return notFound(res)
 })
 
-app.listen(port, () => {
-  console.log(`Express is listening at http://localhost:${port}`)
-})
+app.use(errorHandler)
+
+export default app
