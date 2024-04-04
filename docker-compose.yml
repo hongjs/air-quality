@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  air-quality:
+    image: hongjs/airquality:latest
+    restart: always
+    environment:
+      PORT: 5001
+      TARGET_SITE: 'https://www.iqair.com/th/thailand'
+      WAQI_TOKEN: '507269ce-cb1a-4295-b0dd-ee466a36f390'
+    ports:
+      - '5001:5001'
+    expose:
+      - '5001'

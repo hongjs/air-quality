@@ -17,7 +17,7 @@ export const badRequest = (res: Response, data: unknown): ErrorResponse => {
 }
 
 export const internalServerError = (res: Response, exception: unknown, data?: unknown): ErrorResponse => {
-  if (exception) console.error(exception)
+  if (exception) console.error(JSON.stringify(exception))
 
   if (data) {
     return res.status(500).send(data)

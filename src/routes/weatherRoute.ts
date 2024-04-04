@@ -1,29 +1,42 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Router, type Request, type Response } from 'express';
-import { JSDOM } from 'jsdom';
+import { getByLocation, getByStaion } from '../services/iqAirService';
 import { internalServerError } from '../utils/errors';
 const app = Router()
 
-app.get('/api/usaqi', (req: Request, res: Response) => {
-  fetch(process.env.TARGET_SITE ?? '')
-    .then(async response => await response.text())
-    .then(html => {
-      const dom = new JSDOM(html);
-      const aqiElement = dom.window.document.querySelector('.aqi-value__value')
-      const pm25Element = dom.window.document.querySelector('.pollutant-concentration-value')
-      const timestampWrapper = dom.window.document.querySelector('.timestamp__wrapper');
-      const timeElement = timestampWrapper?.querySelector('time');
-      const timestampElement = timeElement?.getAttribute('datetime');
-
-      const usaqi = Number(aqiElement?.textContent?.trim() ?? 0);
-      const pm25 = Number(pm25Element?.textContent?.trim() ?? 0);
-      const timestamp = timestampElement ? new Date(timestampElement) : null
-
-      return res.json({ usaqi, pm25, timestamp })
-    })
-    .catch(error => {
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.get('/api/getAny', async (req: Request, res: Response) => {
+  try {
+    const data = await getByStaion('bangkok/seri-village');
+    return res.send(data);
+  } catch (error) {
+    try {
+      const data = await getByLocation('13.79318356', '100.6295606');
+      return res.send(data);
+    } catch (error) {
       return internalServerError(res, error)
-    });
+    }
+  }
+})
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.get('/api/station', async (req: Request, res: Response) => {
+  try {
+    const data = await getByStaion('bangkok/seri-village');
+    return res.send(data);
+  } catch (error) {
+    return internalServerError(res, error)
+  }
+})
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+app.get('/api/location', async (req: Request, res: Response) => {
+  try {
+    const data = await getByLocation('13.79318356', '100.6295606');
+    return res.send(data);
+  } catch (error) {
+    return internalServerError(res, error)
+  }
 })
 
 export { app as weatherRoute };
