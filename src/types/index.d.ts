@@ -4,3 +4,9 @@ export interface IqAirData {
   pm25: number
   timestamp: Date | null
 }
+
+export interface StationConfig {
+  station: string
+  latitude: string
+  longitude: string
+}
