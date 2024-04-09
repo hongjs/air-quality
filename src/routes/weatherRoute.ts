@@ -6,7 +6,7 @@ import { badRequest, internalServerError } from '../utils/errors';
 const app = Router()
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.get('/api/stationOrLocation/:name', async (req: Request, res: Response) => {
+app.get('/api/:name', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
   if (!config) return badRequest(res, { message: 'Invalid name' });
@@ -24,7 +24,7 @@ app.get('/api/stationOrLocation/:name', async (req: Request, res: Response) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.get('/api/station/:name', async (req: Request, res: Response) => {
+app.get('/api/:name/station', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
   if (!config) return badRequest(res, { message: 'Invalid name' });
@@ -37,7 +37,7 @@ app.get('/api/station/:name', async (req: Request, res: Response) => {
 })
 
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-app.get('/api/location/:name', async (req: Request, res: Response) => {
+app.get('/api/:name/location', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
   if (!config) return badRequest(res, { message: 'Invalid name' });
