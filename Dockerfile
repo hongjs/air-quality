@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 
-RUN yarn add ts-node
+RUN yarn add ts-node --dev
 RUN yarn install --production --frozen-lockfile
 
 COPY . .
