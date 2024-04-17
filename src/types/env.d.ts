@@ -4,6 +4,7 @@ declare global {
       PORT: string
       TARGET_SITE: string
       WAQI_TOKEN: string
+      AIR4THAI_SITE: string
     }
   }
 }

@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { Router, type Request, type Response } from 'express';
 import { constants } from '../configs';
+import { getAllData } from '../services/air4thaiService';
 import { getByLocation, getByStaion } from '../services/iqAirService';
 import { badRequest, internalServerError } from '../utils/errors';
 const app = Router()
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.get('/api/:name', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
@@ -24,7 +25,6 @@ app.get('/api/:name', async (req: Request, res: Response) => {
   }
 })
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.get('/api/:name/station', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
@@ -37,7 +37,6 @@ app.get('/api/:name/station', async (req: Request, res: Response) => {
   }
 })
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 app.get('/api/:name/location', async (req: Request, res: Response) => {
   const { name } = req.params
   const config = constants[name as keyof typeof constants];
@@ -46,6 +45,16 @@ app.get('/api/:name/location', async (req: Request, res: Response) => {
     const data = await getByLocation(config.latitude, config.longitude);
     return res.send(data);
   } catch (error) {
+    return internalServerError(res, error)
+  }
+})
+
+app.get('/api/air4thai/:stationId', async (req: Request, res: Response) => {
+  try {
+    const data = await getAllData('bkp119t');
+    return res.send(data);
+  } catch (error) {
+    console.log(error)
     return internalServerError(res, error)
   }
 })
