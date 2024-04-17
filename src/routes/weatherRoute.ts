@@ -12,6 +12,7 @@ app.get('/api/:name', async (req: Request, res: Response) => {
   if (!config) return badRequest(res, { message: 'Invalid name' });
   try {
     const data = await getByStaion(config.station);
+    if (data.usaqi === 0 && data.pm25 === 0) throw new Error('no data')
     return res.send(data);
   } catch (error) {
     try {
