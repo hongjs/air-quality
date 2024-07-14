@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { JSDOM } from 'jsdom';
 import { type IqAirData } from 'types';
 
@@ -9,6 +10,7 @@ export const getByStaion = async (station: string): Promise<IqAirData> => {
 
   // US AQI
   const aqiElement = dom.window.document.querySelector('.aqi-value__value')
+  console.log('aqiElement', aqiElement)
   const usaqi = Number(aqiElement?.textContent?.trim() ?? 0);
 
   // PM 2.5
@@ -24,7 +26,7 @@ export const getByStaion = async (station: string): Promise<IqAirData> => {
   // temperature & humidity
   const { temperature, humidity } = findTemperatureAndhumidity(dom);
 
-  return { usaqi, pm25, temperature, humidity, timestamp, type: 'station' };
+  return { usaqi, pm25, temperature, humidity, timestamp, type: 'station', source: 'IQAir' };
 }
 
 const findTemperatureAndhumidity = (dom: JSDOM): { temperature: number, humidity: number } => {
@@ -62,14 +64,15 @@ const getCellValue = (row: HTMLTableRowElement, columnName: 'Temperature' | 'Hum
 }
 
 export const getByLocation = async (lat: string, lon: string): Promise<IqAirData> => {
-  const res = await fetch(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${process.env.WAQI_TOKEN}`)
-  const json = await res.text();
-  const obj = JSON.parse(json);
+  const res = await axios.get(`http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lon}&key=${process.env.WAQI_TOKEN}`)
 
-  const usaqi = Number(obj?.data?.current?.pollution?.aqius ?? 0)
-  const temperature = Number(obj?.data?.current?.weather?.tp ?? 0)
-  const humidity = Number(obj?.data?.current?.weather?.hu ?? 0)
-  const timestamp = obj?.data?.current?.pollution?.ts
+  const data = res.data?.current;
+  const usaqi = Number(data?.pollution?.aqius ?? 0)
+  const temperature = Number(data?.weather?.tp ?? 0)
+  const humidity = Number(data?.weather?.hu ?? 0)
+  const timestamp = data?.pollution?.ts
 
-  return { usaqi, pm25: 0, temperature, humidity, timestamp, type: 'location' };
+  return { usaqi, pm25: 0, temperature, humidity, timestamp, type: 'location', source: 'IQAir' };
 }
+
+export default { getByStaion, getByLocation }
