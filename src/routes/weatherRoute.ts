@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-import { constants } from '@/configs';
 import { Router, type Request, type Response } from 'express';
+import { constants } from '../configs';
 import air4thaiSrv from '../services/air4thaiService';
 import aiqInSrv from '../services/aqiInService';
 import iqAirSrv from '../services/iqAirService';
